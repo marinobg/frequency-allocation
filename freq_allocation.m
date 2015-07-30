@@ -25,6 +25,8 @@ neighbourlist
 
 I
 
+d
+
 col_indexes = getColumnIndexes(modNeighbourlist, NP); %Get columnindexes for values with biggest value for inverse distance
 
 for i = col_indexes' %Removing indexes that are going to be used
@@ -33,18 +35,10 @@ end
 
 %Fiding the most critical node of the nodes chosen with shortest distance
 %(probably just two)
-revmeters = zeros(1, length(col_indexes));
-for i = 1:length(neighbourlist)
-    for j = 1:length(neighbourlist)
-        if any(I(i,j) == col_indexes)
-            index = find(I(i,j) == col_indexes);
-            revmeters(index) = revmeters(index) + neighbourlist(i,j);
-        end
-    end
-end
+invmeters = sumInverseMeters(col_indexes, neighbourlist, I);
 
 
-index = find(revmeters == max(revmeters));
+index = find(invmeters == max(invmeters));
 AP = col_indexes(index);
 col_indexes(index) = []; %Removing element
 
@@ -79,7 +73,14 @@ while length(find(freq_alloc)) < NP
             end
         end
         [~, ~, col_indexes] = find(col_indexes); %Returns vector with only non-zero elements
+        
+        if length(modAvailableFreqs) == 1
+            freq_alloc(col_indexes) = modAvailableFreqs;
+            modAvailableFreqs(1) = [];
             
+        else
+            freq_alloc = chooseFrequency(freq_alloc, availableFreqs, col_indexes, I, neighbourlist);
+        end
     end
     break;
     
