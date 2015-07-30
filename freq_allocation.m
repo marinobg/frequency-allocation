@@ -25,11 +25,7 @@ neighbourlist
 
 I
 
-maxval = max(neighbourlist(5,:)); %Getting maximum value in neighbourlist
-
-%Getting the column index of the values with value=maxval
-col_indexes = find(neighbourlist == maxval);
-col_indexes = col_indexes / NP;
+col_indexes = getColumnIndexes(modNeighbourlist, NP); %Get columnindexes for values with biggest value for inverse distance
 
 for i = col_indexes' %Removing indexes that are going to be used
     modNeighbourlist(NP, i) = 0;
@@ -52,21 +48,28 @@ index = find(revmeters == max(revmeters));
 AP = col_indexes(index);
 col_indexes(index) = []; %Removing element
 
-availableFreqs = [1, 6, 11];
+availableFreqs = [1, 6, 11]; %This will not be changed
+modAvailableFreqs = availableFreqs; %This will change
+
 freq_alloc = zeros(1, NP);
 
-freq_alloc(AP) = availableFreqs(randi(numel(availableFreqs))); %Giving channel to most critical node
-availableFreqs(availableFreqs == freq_alloc(AP)) = []; %Remove channel picked
+freq_alloc(AP) = modAvailableFreqs(randi(numel(modAvailableFreqs))); %Giving channel to most critical node
+modAvailableFreqs(modAvailableFreqs == freq_alloc(AP)) = []; %Remove channel picked
 
 if length(col_indexes) == 1
    AP = col_indexes;
-   freq_alloc(AP) = availableFreqs(randi(numel(availableFreqs)));
-   availableFreqs(availableFreqs == freq_alloc(AP)) = [];
+   freq_alloc(AP) = modAvailableFreqs(randi(numel(modAvailableFreqs)));
+   modAvailableFreqs(modAvailableFreqs == freq_alloc(AP)) = [];
 end
 
 
 while length(find(freq_alloc)) < NP
     modNeighbourlist = sort(modNeighbourlist,1,'ascend');
+    
+    col_indexes = getColumnIndexes(modNeighbourlist, NP);
+    
+    break;
+    
 end
 
 %TODO: Finn neste nodepar og velg frekvenser for alle sammen.
