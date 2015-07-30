@@ -68,6 +68,16 @@ while length(find(freq_alloc)) < NP
     
     col_indexes = getColumnIndexes(modNeighbourlist, NP);
     
+    if length(find(freq_alloc(col_indexes))) == 1 %Only one of the APs don't have a channel assigned
+        for i = 1:length(col_indexes) 
+            if freq_alloc(col_indexes(i))
+                modNeighbourlist(NP, col_indexes(i)) = 0; %Remove element
+                col_indexes(i) = 0; %Remove elements that has already got a channel assigned
+            end
+        end
+        [~, ~, col_indexes] = find(col_indexes); %Returns vector with only non-zero elements
+            
+    end
     break;
     
 end
