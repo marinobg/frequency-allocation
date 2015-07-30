@@ -56,12 +56,15 @@ freq_alloc = zeros(1, NP);
 freq_alloc(AP) = modAvailableFreqs(randi(numel(modAvailableFreqs))); %Giving channel to most critical node
 modAvailableFreqs(modAvailableFreqs == freq_alloc(AP)) = []; %Remove channel picked
 
-if length(col_indexes) == 1
-   AP = col_indexes;
-   freq_alloc(AP) = modAvailableFreqs(randi(numel(modAvailableFreqs)));
-   modAvailableFreqs(modAvailableFreqs == freq_alloc(AP)) = [];
+if length(col_indexes) <= 2 %Assign frequency to the other APs (probably 1)
+    for i = 1:length(col_indexes)
+        AP = col_indexes(i);
+        freq_alloc(AP) = modAvailableFreqs(randi(numel(modAvailableFreqs)));
+        modAvailableFreqs(modAvailableFreqs == freq_alloc(AP)) = [];
+    end
 end
-
+%Kanskje legge inn funksjonalitet for > 2, men sjansen for at det skjer er
+%liten
 
 while length(find(freq_alloc)) < NP
     modNeighbourlist = sort(modNeighbourlist,1,'ascend');
