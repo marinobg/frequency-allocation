@@ -2,7 +2,7 @@ function frequencyPlot(Px, Py, Size, NP, freq_alloc)
 
 waitforbuttonpress;
 
-figure()
+figure(2)
 hold on
 axis([ 0 Size 0 Size])
 
@@ -47,28 +47,32 @@ lables = cellstr(num2str([1:NP]'));
 text(Px, Py, lables, 'VerticalAlignment','bottom', 'HorizontalAlignment','right')
 
 if length(handlesToUse) == 3
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 1', 'Channel 6', 'Channel 11'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 1', 'Channel 6', 'Channel 11'});
 
 elseif isempty(find(freq_alloc == 1)) && isempty(find(freq_alloc == 6))
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}], {'Channel 11', 'Channel not assigned'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}], {'Channel 11', 'Channel not assigned'});
 
 elseif isempty(find(freq_alloc == 1)) && isempty(find(freq_alloc == 11))
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}], {'Channel 6', 'Channel not assigned'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}], {'Channel 6', 'Channel not assigned'});
 
 elseif isempty(find(freq_alloc == 6)) && isempty(find(freq_alloc == 11))
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}], {'Channel 1', 'Channel not assigned'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}], {'Channel 1', 'Channel not assigned'});
     
 elseif isempty(find(freq_alloc == 1))
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 6', 'Channel 11', 'Channel not assigned'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 6', 'Channel 11', 'Channel not assigned'});
     
 elseif isempty(find(freq_alloc == 6))
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 1', 'Channel 11', 'Channel not assigned'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 1', 'Channel 11', 'Channel not assigned'});
     
 elseif isempty(find(freq_alloc == 11))
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 1', 'Channel 6', 'Channel not assigned'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 1', 'Channel 6', 'Channel not assigned'});
     
 else
-    legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}, var{handlesToUse(4)}], {'Channel 1', 'Channel 6', 'Channel 11', 'Channel not assigned'})
+    lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}, var{handlesToUse(4)}], {'Channel 1', 'Channel 6', 'Channel 11', 'Channel not assigned'});
 end
+
+set(lgnd, 'color', 'none');
+textobj = findobj(lgnd, 'type', 'text');
+set(textobj, 'fontsize', 7);
 
 end
