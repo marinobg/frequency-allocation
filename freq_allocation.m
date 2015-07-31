@@ -35,6 +35,7 @@ if alone
     for i = 1:length(alone)
         AP = alone(i);
         freq_alloc(AP) = availableFreqs(randi(numel(availableFreqs))); %Select random channel
+        frequencyPlot(Px, Py, Size, NP, freq_alloc)
     end
 end
 
@@ -46,6 +47,7 @@ while length(find(freq_alloc)) < NP
         freq = chooseFrequency(AP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
         freq_alloc(AP) = freq; %Assign frequency
         neighbourlist(NP, AP) = 0; %"Remove" the APs neighbourlist, as it is not interesting anymore. Set value to zero to ignore AP
+        frequencyPlot(Px, Py, Size, NP, freq_alloc)
         
     else
         invmeters = sumInverseMeters(AP, neighbourlist, I); %Find most critical AP, sum of all inversemeter value for the APs
@@ -61,6 +63,8 @@ while length(find(freq_alloc)) < NP
             %Remove value from invmeters and the AP assigned
             invmeters(index) = [];
             AP(index) = [];
+            
+            frequencyPlot(Px, Py, Size, NP, freq_alloc)
         end %while
         
     end %if
