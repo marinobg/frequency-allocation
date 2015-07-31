@@ -15,12 +15,12 @@ availableFreqs = [1, 6, 11];
 Xmax = Size - 2*MC;
 Ymax = Size - 2*MC;
 
-[Px, Py, d, nlist] = createPointsAndDistances(NP, MC, Xmax, Ymax); 
+[Px, Py, d, neighbourlist] = createPointsAndDistances(NP, MC, Xmax, Ymax); 
 
 initialPlot(Px, Py, Size, NP)
 
 
-[neighbourlist,I] = sort(nlist,1,'ascend');
+[neighbourlist,I] = sort(neighbourlist,1,'ascend');
 
 neighbourlist
 
@@ -39,6 +39,14 @@ if alone
     end
 end
 
+
+while length(find(freq_alloc)) < NP
+    maxval = max(neighbourlist(NP,:));
+    AP = find(neighbourlist(NP,:) == maxval);
+    if length(AP) > 1
+        invmeters = sumInverseMeters(AP, neighbourlist, I); %Find most critical AP, sum of all inversemeter value for the APs
+    end
+end
 
         
     
