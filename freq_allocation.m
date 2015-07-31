@@ -1,7 +1,7 @@
 clear all
 
 % Number of APs
-NP = 4;
+NP = 5;
 
 % max distance between points
 MC = 20;
@@ -26,6 +26,28 @@ neighbourlist
 
 I
 
+freq_alloc = zeros(1, NP); %Vector with the channels each AP get assigned
+
+alone = find(neighbourlist(NP, :) == 0); %Check if some APs doesn't detect other APs
+if alone
+    %Since these APs doesn't interefere other APs, they can just get a
+    %random channel assigned
+    for i = 1:length(alone)
+        AP = alone(i);
+        freq_alloc(AP) = availableFreqs(randi(numel(availableFreqs))); %Select random channel
+        neighbourlist(:, AP) = []; %Remove the APs neighbourlist, as it is not interesting anymore
+    end
+end
+
+
+        
+    
+
+%TODO: FINN EN MÅTE Å LØSE PROBLEMET MED FREKVENSALLOKERINGEN. ANTAR EN HAR
+%OVERORDNET OVERSIKT. FINN MEST KRITISKE PAR, GI DEM EN FREKVENS. DETTE
+%RAPPORTERES INN OG SÅ FJERNES DISSE NODENE FRA NABOLISTENE TIL DE ANDRE
+%NODENE. EVT. SÅ KAN NABOLISTENE TIL DE SOM HAR FÅTT FREKVENS FJERNES
+
 %Fiding the most critical node of the nodes chosen with shortest distance
 %(probably just two) (Assume it is just two for now)
-invmeters = sumInverseMeters(col_indexes, neighbourlist, I);
+%invmeters = sumInverseMeters(col_indexes, neighbourlist, I);
