@@ -43,9 +43,16 @@ end
 while length(find(freq_alloc)) < NP
     maxval = max(neighbourlist(NP,:));
     AP = find(neighbourlist(NP,:) == maxval);
-    if length(AP) > 1
+    
+    if length(AP) == 1
+        freq = chooseFrequency(AP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
+        freq_alloc(AP) = freq; %Assign frequency
+        neighbourlist(:, AP) = []; %Remove the APs neighbourlist, as it is not interesting anymore
+        
+    else %Skriver for at den virker for 2. Kan oppstå flere enn to (liten sjans). MÅ DA SKRIVE OM!
         invmeters = sumInverseMeters(AP, neighbourlist, I); %Find most critical AP, sum of all inversemeter value for the APs
     end
+    
 end
 
         
