@@ -1,8 +1,13 @@
-function frequencyPlot(Px, Py, Size, NP, freq_alloc)
+function frequencyPlot(Px, Py, Size, NP, freq_alloc, selfish)
 
 waitforbuttonpress;
 
-figure(2)
+if selfish
+    figure(2)
+    title('Selfish')
+else
+    figure(3)
+end
 hold on
 axis([ 0 Size 0 Size])
 
