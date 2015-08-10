@@ -20,18 +20,18 @@ for i = 1:length(freq_alloc)
 end
 
 %Find out which plots to use in legend
-if length(find(freq_alloc)) == NP
-    handlesToUse = zeros(1, 3);
+if length(find(freq_alloc)) == NP %If all nodes have a channel assigned
+    handlesToUse = zeros(1, 3); %Array with handles for plot. Use to get legend right
     counter = 1;
     for i = 1:5:11
         index = find(freq_alloc == i);
         index = index(1);
-        handlesToUse(counter) = index;
+        handlesToUse(counter) = index; %Get which plot to use in legend
         counter = counter + 1;
     end
     
 else
-    handlesToUse = zeros(1, 4);
+    handlesToUse = zeros(1, 4); %Array with handles for plot. Use to get legend right
     counter = 1;
     for i = 1:5:11
         index = find(freq_alloc == i);
@@ -39,7 +39,7 @@ else
             continue
         end
         index = index(1);
-        handlesToUse(counter) = index;
+        handlesToUse(counter) = index; %Get which plot to use in legend
         counter = counter + 1;
     end
     %If not channel assigned yet
@@ -51,6 +51,8 @@ end
 lables = cellstr(num2str([1:NP]'));
 text(Px, Py, lables, 'VerticalAlignment','bottom', 'HorizontalAlignment','right')
 
+
+%Find of what kind of legend to use
 if length(handlesToUse) == 3
     lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}], {'Channel 1', 'Channel 6', 'Channel 11'});
 
@@ -76,8 +78,8 @@ else
     lgnd = legend([var{handlesToUse(1)}, var{handlesToUse(2)}, var{handlesToUse(3)}, var{handlesToUse(4)}], {'Channel 1', 'Channel 6', 'Channel 11', 'Channel not assigned'});
 end
 
-set(lgnd, 'color', 'none');
+set(lgnd, 'color', 'none'); %Make legend transparent
 textobj = findobj(lgnd, 'type', 'text');
-set(textobj, 'fontsize', 7);
+set(textobj, 'fontsize', 7); %Change size of text in legend
 
 end
