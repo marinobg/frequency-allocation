@@ -4,7 +4,7 @@ nlistAP = neighbourlist(:, AP); %Get neighbourlist of the specific AP
 detectedAPs = I(:, AP); %Get list of interfering APs
 
 for i = length(nlistAP):-1:1 %Starts with the closest (most critical) AP first
-    if nlistAP(i) == 0
+    if nlistAP(i) == Inf
         break
     end
     
