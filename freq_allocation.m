@@ -63,12 +63,13 @@ masscenterY = sum(Py) / NP;
 dist = zeros(1, NP);
 
 for i = 1:length(Px)
+    %Finding nodes distances to the center of mass
     dist(i) = sqrt( (Px(i) - masscenterX)^2 + (Py(i) - masscenterY)^2 );
 end
-[dist, ind] = sort(dist);
+[~, nodes] = sort(dist); %Sort in what order the nodes should be assigned frequency
 
 for i = 1:NP
-    nextAP = ind(i);
+    nextAP = nodes(i);
     freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
     freq_alloc(nextAP) = freq; %Assign frequency
     frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
