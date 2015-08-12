@@ -7,7 +7,7 @@ NP = 5;
 MC = 20;
 
 % min distance
-Size = 100;
+Size = 50;
 
 %Channels to use
 availableFreqs = [1, 6, 11];
@@ -29,7 +29,7 @@ neighbourlist
 I
 
 freq_allocSelfish = selfishAllocation(NP, availableFreqs, neighbourlist, I, Px, Py, Size, d);
-freq_allocSelfish = [11 6 6 1 1];
+%freq_allocSelfish = [6 1 11 11 1];
 
 freq_alloc = zeros(1, NP); %Vector with the channels each AP get assigned
 
@@ -47,46 +47,49 @@ end
 %%Version 2 of frequency allocation with neighbourlists
 
 %First finds closest pair of nodes
-minval = min(neighbourlist(NP,:)); %Minimum distance
-AP = find(neighbourlist(NP,:) == minval); %Closest APs in the topology
-
-for nextAP = AP %Assign the nodes in the closest pair to a channel
-    freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
-    freq_alloc(nextAP) = freq; %Assign frequency
-    frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
-end
-
-%%%
-%Test to see5 if the node that are closest to both of the nodes in the most
-%critical pair (sum of distances) should be chosen next
-% minsum = inf;
-% for col = 1:NP
-%     if sum(neighbourlist(AP,:)) < minsum
-%         nextAP = col;
-%         minsum = sum(neighbourlist(AP,:));
-%     end
-% end
+% minval = min(neighbourlist(NP,:)); %Minimum distance
+% AP = find(neighbourlist(NP,:) == minval); %Closest APs in the topology
 % 
-% freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc);
-% freq_alloc(nextAP) = freq;
-% frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+% for nextAP = AP %Assign the nodes in the closest pair to a channel
+%     freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
+%     freq_alloc(nextAP) = freq; %Assign frequency
+%     frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+% end
 
 %%%
+%Test to see if center of mass is the correct approach
+masscenterX = sum(Px) / NP;
+masscenterY = sum(Py) / NP;
+dist = zeros(1, NP);
 
-while length(find((freq_alloc))) < NP %Assign the other APs to a channel
-    indexes = find(freq_alloc); %Find links that are assigned to a frequency
-    nextAP = findSmallestDist(d, indexes); %Finds next link to be assigned to a frequency
-    
+for i = 1:length(Px)
+    dist(i) = sqrt( (Px(i) - masscenterX)^2 + (Py(i) - masscenterY)^2 );
+end
+[dist, ind] = sort(dist);
+
+for i = 1:NP
+    nextAP = ind(i);
     freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
     freq_alloc(nextAP) = freq; %Assign frequency
     frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
 end
 
+%%%
+
+% while length(find((freq_alloc))) < NP %Assign the other APs to a channel
+%     indexes = find(freq_alloc); %Find links that are assigned to a frequency
+%     nextAP = findSmallestDist(d, indexes); %Finds next link to be assigned to a frequency
+%     
+%     freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
+%     freq_alloc(nextAP) = freq; %Assign frequency
+%     frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+% end
 
 
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%Version 1 of frequency allocation with neighbourlists
 
 % while length(find(freq_alloc)) < NP
@@ -121,6 +124,8 @@ end
 %     end %if
 %     
 % end %while
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 

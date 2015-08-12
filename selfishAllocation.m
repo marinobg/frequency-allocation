@@ -9,6 +9,7 @@ while ~isempty(nodes)
     nodes(find(nodes == node)) = []; %Removing node selected, preventing from selecting that node again
     freq = chooseFrequency(node, neighbourlist, I, availableFreqs, freq_allocSelfish);
     freq_allocSelfish(node) = freq;
+    freq_allocSelfish = [11 6 6 1 1];
     frequencyPlot(Px, Py, Size, NP, freq_allocSelfish, true)
     
 end

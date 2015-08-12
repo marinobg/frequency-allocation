@@ -1,6 +1,6 @@
 function frequencyPlot(Px, Py, Size, NP, freq_alloc, selfish)
 
-waitforbuttonpress;
+%waitforbuttonpress;
 
 if selfish
     figure(2)
