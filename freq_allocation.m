@@ -29,7 +29,7 @@ neighbourlist
 I
 
 freq_allocSelfish = selfishAllocation(NP, availableFreqs, neighbourlist, I, Px, Py, Size, d);
-%freq_allocSelfish = [6 1 11 11 1];
+freq_allocSelfish = [11 6 1 11 6];
 
 freq_alloc = zeros(1, NP); %Vector with the channels each AP get assigned
 
@@ -57,23 +57,40 @@ end
 % end
 
 %%%
-%Test to see if center of mass is the correct approach
-masscenterX = sum(Px) / NP;
-masscenterY = sum(Py) / NP;
-dist = zeros(1, NP);
-
-for i = 1:length(Px)
-    %Finding nodes distances to the center of mass
-    dist(i) = sqrt( (Px(i) - masscenterX)^2 + (Py(i) - masscenterY)^2 );
-end
-[~, nodes] = sort(dist); %Sort in what order the nodes should be assigned frequency
-
-for i = 1:NP
-    nextAP = nodes(i);
+%Test to see if center of mass is the correct approach. 
+%Center of mass is calculated from nodes not assigned to a channel
+while length(find(freq_alloc)) < NP
+    nodes = find(freq_alloc == 0); %Finding nodes not assigned to channel
+    masscenterX = sum(Px(nodes)) / length(nodes); %x coordinate
+    masscenterY = sum(Py(nodes)) / length(nodes); %y coordinate
+    dist = zeros(1, length(nodes));
+    
+    for i = 1:length(dist)
+        %Finding nodes distances to the center of mass
+        dist(i) = sqrt( (Px(nodes(i)) - masscenterX)^2 + (Py(nodes(i)) - masscenterY)^2 );
+    end
+    
+    [~, index] = min(dist);
+    nextAP = nodes(index);
+    
     freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
     freq_alloc(nextAP) = freq; %Assign frequency
     frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+    
 end
+% masscenterX = sum(Px) / NP;
+% masscenterY = sum(Py) / NP;
+%dist = zeros(1, NP);
+
+% for i = 1:length(Px)
+%     %Finding nodes distances to the center of mass
+%     dist(i) = sqrt( (Px(i) - masscenterX)^2 + (Py(i) - masscenterY)^2 );
+% end
+%[~, nodes] = sort(dist); %Sort in what order the nodes should be assigned frequency
+% nextAP = min(dist);
+% freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
+% freq_alloc(nextAP) = freq; %Assign frequency
+% frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
 
 %%%
 
