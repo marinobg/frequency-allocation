@@ -1,13 +1,13 @@
 clear all
 
 % Number of APs
-NP = 5;
+NP = 10;
 
 % max dista5ce between points
 MC = 20;
 
 % min distance
-Size = 50;
+Size = 100;
 
 %Channels to use
 availableFreqs = [1, 6, 11];
@@ -29,7 +29,7 @@ neighbourlist
 I
 
 freq_allocSelfish = selfishAllocation(NP, availableFreqs, neighbourlist, I, Px, Py, Size, d);
-freq_allocSelfish = [6 11 1 11 6];
+freq_allocSelfish = [1 11 6 6 1 11 6 1 1 11];
 
 freq_alloc = zeros(1, NP); %Vector with the channels each AP get assigned
 
@@ -74,11 +74,23 @@ for i = 1:NP
     dist(i) = sqrt( (Px(i) - masscenterX)^2 + (Py(i) - masscenterY)^2 );
 end
 
-[~, nextAP] = min(dist);
+[minDistMass, ~] = min(dist);
 
-freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
-freq_alloc(nextAP) = freq; %Assign frequency
-frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+mindist = min(neighbourlist(NP,:)); %Minimum distance
+
+%Choose AP after smallest distance between two nodes or smallest distance
+%to center of mass
+if minDistMass < mindist
+    [~, AP] = min(dist);
+else
+    AP = find(neighbourlist(NP,:) == mindist); %Closest APs in the topology
+end
+
+for nextAP = AP
+    freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
+    freq_alloc(nextAP) = freq; %Assign frequency
+    frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+end
 
 while length(find(freq_alloc)) < NP
     nodes = find(freq_alloc); %Find nodes assigned to a frequency
@@ -92,8 +104,16 @@ while length(find(freq_alloc)) < NP
         dist(i) = sqrt( (Px(freeNodes(i)) - masscenterX)^2 + (Py(freeNodes(i)) - masscenterY)^2 );
     end
     
-    [~, index] = min(dist);
-    nextAP = freeNodes(index);
+    [minDistMass, index] = min(dist);
+    
+    indexes = find(freq_alloc);
+    [~, mindist] = findSmallestDist(d, indexes);
+    
+    if minDistMass < mindist
+        nextAP = freeNodes(index);
+    else
+        [nextAP, ~] = findSmallestDist(d, indexes);
+    end
     
     freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
     freq_alloc(nextAP) = freq; %Assign frequency
