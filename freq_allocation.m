@@ -1,13 +1,13 @@
 clear all
 
 % Number of APs
-NP = 20;
+NP = 5;
 
 % max distance between points
 MC = 20;
 
 % min distance
-Size = 200;
+Size = 60;
 
 %Channels to use
 availableFreqs = [1, 6, 11];
@@ -67,6 +67,8 @@ while isempty(find(freq_alloc)) %As long as no node have assigned a frequency
         %If true, node does not have other nodes in its neighbour list that are allowed to choose a frequency
         if checkNeighbourlist(nlist, I, node, nextAP)
             nextAP(end + 1) = node; %Append to nextAP list
+        elseif neighbourlist(NP, node) < neighbourlist(NP, nextAP)
+            nextAP = node;
         end
     end
     
