@@ -89,7 +89,7 @@ for i = 1:length(d) %Rows
     end
 end
 
-lgnd = legend([var{1}, var{2}], {'Selfish', 'Smart allocation'});
+lgnd = legend([var{1}, var{2}], {'Selfish', 'Maximizing shortest distance'});
 set(lgnd, 'color', 'none'); %Make legend transparent
 
 end
