@@ -1,4 +1,4 @@
-function distancePlot(d, freq_alloc, NP, freq_allocSelfish)
+function [dmin, dminSelf] = distancePlot(d, freq_alloc, NP, freq_allocSelfish)
 
 dmin = ones(1, NP) * inf; %Vector with shortest distance for APs
 
