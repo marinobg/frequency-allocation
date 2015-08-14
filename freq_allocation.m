@@ -33,17 +33,6 @@ freq_allocSelfish = selfishAllocation(NP, availableFreqs, neighbourlist, I, Px, 
 
 freq_alloc = zeros(1, NP); %Vector with the channels each AP get assigned
 
-alone = find(neighbourlist(NP, :) == Inf); %Check if some APs doesn't detect other APs
-if alone
-    %Since these APs doesn't interefere other APs, they can just get a
-    %random channel assigned
-    for i = 1:length(alone)
-        AP = alone(i);
-        freq_alloc(AP) = availableFreqs(randi(numel(availableFreqs))); %Select random channel
-        frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
-    end
-end
-
 %%Version 2 of frequency allocation with neighbourlists
 
 %First finds closest pair of nodes
@@ -127,6 +116,19 @@ while length(find(freq_alloc)) < NP
     freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
     freq_alloc(nextAP) = freq; %Assign frequency
     frequencyPlot(Px, Py, Size, NP, freq_alloc, false) 
+end
+
+
+
+alone = find(neighbourlist(NP, :) == Inf); %Check if some APs doesn't detect other APs
+if alone
+    %Since these APs doesn't interefere other APs, they can just get a
+    %random channel assigned
+    for i = 1:length(alone)
+        AP = alone(i);
+        freq_alloc(AP) = availableFreqs(randi(numel(availableFreqs))); %Select random channel
+        frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+    end
 end
 
 
