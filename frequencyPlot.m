@@ -1,6 +1,6 @@
 function frequencyPlot(Px, Py, Size, NP, freq_alloc, selfish)
 
-%waitforbuttonpress;
+%waitforbuttonpress; %Put the script on hold until a button is pressed
 
 if selfish
     figure(2)
@@ -10,6 +10,8 @@ else
 end
 hold on
 axis([ 0 Size 0 Size])
+xlabel('Distance (meters)')
+ylabel('Distance (meters)')
 
 %Creates cellarray for the plots
 var = {1, NP};
