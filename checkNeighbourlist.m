@@ -6,7 +6,7 @@ function nodeAssigned = checkNeighbourlist(nlist, I, node, nextAP)
 interfering = I(:, node);
 for i = 1:length(nlist)
     if nlist(i) == inf
-        interfering(i) = 0; %Mark which APs to remove
+        interfering(i) = 0; %Mark which APs to remove, not detected in neighbour list
     end
 end
 
