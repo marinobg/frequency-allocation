@@ -167,27 +167,14 @@ for count = 1:iterations
     
     %Histogramfunksjon
     figure()
-    [a, b] = hist(dminSelfMat(count,:), unique(dminSelfMat(count, :)));
-    %     hBar = hist(dminSelfMat(count,:));
-    %
-    %     bar(hBar, 'hist')
-    %     hold on
-    %
-    %     index = find(b == dminMat(count));
-    %     x = b(index);
-    %     y = a(index);
-    %bar([x, x+0.5], [0, y], 'r')
+    [a, b] = hist(dminSelfMat(count,:), unique(dminSelfMat(count, :))); %Get values on x- and y-axis
+    hBar = bar(b, a); 
     
-    
-    %index = find(dminSelfMat(count,:) == dminMat(count));
-    %colors = [index(:), zeros(numel(index),1) 0.5.*(~index(:))];
-    %set(hBar, 'FaceVertexCData', colors)
-    plot(b, a, 'r')
+    index = find(b == dminMat(count));
+    x = b(index);
+    y = a(index);
     hold on
-    
-    line([dminMat(count), dminMat(count)], [0, max(a)])
-    
-    
+    bar([x-0.05, x, x+0.05], [0, y, 0], 1, 'r')
     
 end
 best
