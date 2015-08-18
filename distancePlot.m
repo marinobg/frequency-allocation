@@ -1,16 +1,8 @@
-function [dmin, dminSelf] = distancePlot(d, freq_alloc, NP, freq_allocSelfish)
-
-dmin = ones(1, NP) * inf; %Vector with shortest distance for APs
+function distancePlot(d, freq_alloc, NP, freq_allocSelfish)
 
 %Finding the shortest distance for AP i to j with equal frequency from the
 %smart frequency allocation
-for i = 1:length(d)
-    for j = 1:length(d)
-        if i ~= j && d(i,j) < dmin(i) && freq_alloc(i) == freq_alloc(j)
-            dmin(i) = d(i,j);
-        end
-    end
-end
+dmin = smallestDistance(NP, d, freq_alloc);
 
 %Make the shortest distance appear on channel 6
 [~, index] = min(dmin);
@@ -24,17 +16,10 @@ if freq_alloc(index) ~= 6
 end
 
 
-dminSelf = ones(1, NP) * inf; %Vector with shortest distance for APs
 
 %Finding the shortest distance for AP i to j with equal frequency from the
 %selfish allocation
-for i = 1:length(d)
-    for j = 1:length(d)
-        if i ~= j && d(i,j) < dminSelf(i) && freq_allocSelfish(i) == freq_allocSelfish(j)
-            dminSelf(i) = d(i,j);
-        end
-    end
-end
+dminSelf = smallestDistanceSelfish(NP, d, freq_allocSelfish);
 
 %Make the shortest distance appear on channel 6
 [~, index] = min(dminSelf);
@@ -57,10 +42,10 @@ set(gca, 'YTick', [1 6 11]);
 set(gca, 'YTickLabel', [1 6 11]);
 
 var = {1, 2};
-freq_alloc
-freq_allocSelfish
-dmin
-dminSelf
+% freq_alloc
+% freq_allocSelfish
+% dmin
+% dminSelf
 
 %Plot shortest distances at same frequencies
 for i = 1:length(dmin)
