@@ -10,6 +10,6 @@ switch(frec_alloc(j))
     case 11
         col = 'g';
     otherwise
-        col = 'b';
+        col = 'b'; %Not assigned a channel
 end
 end
