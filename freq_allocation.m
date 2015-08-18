@@ -1,8 +1,8 @@
 % Number of APs
 NP = 10;
 
-iterations = 100; %Number of topologies
-selfiterations = 100; %Number of selfish test for each topology
+iterations = 1; %Number of topologies
+selfiterations = 1; %Number of selfish test for each topology
 best = zeros(1, 3);
 PxMat = zeros(iterations, NP); %Matrix with all topologies' x-coordinates. Same topology row wise
 PyMat = zeros(iterations, NP); %Matrix with all topologies' y-coordinates. Same topology row wise
@@ -33,7 +33,7 @@ for count = 1:iterations
     PxMat(count, :) = Px;
     PyMat(count, :) = Py;
     
-    %initialPlot(Px, Py, Size, NP) %Creates a plot of the topology before assignment
+    initialPlot(Px, Py, Size, NP) %Creates a plot of the topology before assignment
     
     
     [neighbourlist,I] = sort(neighbourlist,1,'descend');
@@ -89,7 +89,7 @@ for count = 1:iterations
             for AP = nextAP
                 freq = chooseFrequency(AP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
                 freq_alloc(AP) = freq; %Assign frequency
-                %frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+                frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
             end
             break
         end
@@ -131,7 +131,7 @@ for count = 1:iterations
         
         freq = chooseFrequency(nextAP, neighbourlist, I, availableFreqs, freq_alloc); %Finds optimal frequency for AP
         freq_alloc(nextAP) = freq; %Assign frequency
-        %frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+        frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
     end
     
     
@@ -143,7 +143,7 @@ for count = 1:iterations
         for i = 1:length(alone)
             AP = alone(i);
             freq_alloc(AP) = availableFreqs(randi(numel(availableFreqs))); %Select random channel
-            %frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+            frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
         end
     end
     
@@ -152,7 +152,7 @@ for count = 1:iterations
     
     
     %Creating distance plot
-    %distancePlot(d, freq_alloc, NP, freq_allocSelfish)
+    distancePlot(d, freq_alloc, NP, freq_allocSelfish)
     
     dminMat(count) = min(dmin);
     %dminSelfMat(count) = min(dminSelf);
@@ -166,15 +166,15 @@ for count = 1:iterations
     end
     
     %Histogramfunksjon
-    figure()
-    [a, b] = hist(dminSelfMat(count,:), unique(dminSelfMat(count, :))); %Get values on x- and y-axis
-    hBar = bar(b, a); 
-    
-    index = find(b == dminMat(count));
-    x = b(index);
-    y = a(index);
-    hold on
-    bar([x-0.05, x, x+0.05], [0, y, 0], 1, 'r')
+%     figure()
+%     [a, b] = hist(dminSelfMat(count,:), unique(dminSelfMat(count, :))); %Get values on x- and y-axis
+%     hBar = bar(b, a); 
+%     
+%     index = find(b == dminMat(count));
+%     x = b(index);
+%     y = a(index);
+%     hold on
+%     bar([x-0.05, x, x+0.05], [0, y, 0], 1, 'r')
     
 end
 best
