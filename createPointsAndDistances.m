@@ -2,12 +2,15 @@ function [Px, Py, d, nlist] = createPointsAndDistances(NP, MC, Xmax, Ymax)
 Px = zeros(1, NP);
 Py = zeros(1, NP);
 
-Creating random points
-for i=1:NP
-    Px(i)=MC+randi(Xmax);
-    Py(i)=MC+randi(Ymax);
-end %i
+%Creating random points
+% for i=1:NP
+%     Px(i)=MC+randi(Xmax);
+%     Py(i)=MC+randi(Ymax);
+% end %i
 
+Px = [21 108 99 99 19 101 85 21 195 110];
+Py = [149 186 45 57 87 153 137 89 17 50];
+% 
 % Px(1) = 21;
 % Py(1) = 24;
 % Px(2) = 76;
