@@ -7,6 +7,7 @@ if selfish
     title('Selfish')
 else
     figure(3)
+    title('FIRE')
 end
 hold on
 axis([ 0 Size 0 Size])
@@ -83,5 +84,8 @@ end
 set(lgnd, 'color', 'none'); %Make legend transparent
 textobj = findobj(lgnd, 'type', 'text');
 set(textobj, 'fontsize', 7); %Change size of text in legend
+
+
+hold off
 
 end

@@ -1,5 +1,5 @@
 % Number of APs
-NP = 10;
+NP = 5;
 
 iterations = 1; %Number of topologies
 selfiterations = 1; %Number of selfish test for each topology
@@ -27,7 +27,7 @@ for count = 1:iterations
     availableFreqs = [1, 6, 11];
     
     Xmax = Size - 2*MC;
-    Ymax = Size - 2*MC;
+    Ymax = 1%Size - 2*MC;
     
     [Px, Py, d, neighbourlist] = createPointsAndDistances(NP, MC, Xmax, Ymax);
     PxMat(count, :) = Px;
@@ -47,7 +47,7 @@ for count = 1:iterations
     for it = 1:selfiterations
         freq_allocSelfish = selfishAllocation(NP, availableFreqs, neighbourlist, I, Px, Py, Size, d);
         %freq_allocSelfish = [11 1 11 1 6 6];
-        dminSelf = smallestDistanceSelfish(NP, d, freq_allocSelfish);
+        dminSelf = smallestDistance(NP, d, freq_allocSelfish);
         dminSelfMat(count, it) = min(dminSelf);
         it
         dminSelfMat

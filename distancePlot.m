@@ -19,7 +19,7 @@ end
 
 %Finding the shortest distance for AP i to j with equal frequency from the
 %selfish allocation
-dminSelf = smallestDistanceSelfish(NP, d, freq_allocSelfish);
+dminSelf = smallestDistance(NP, d, freq_allocSelfish);
 
 %Make the shortest distance appear on channel 6
 [~, index] = min(dminSelf);

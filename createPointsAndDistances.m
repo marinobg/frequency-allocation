@@ -3,13 +3,13 @@ Px = zeros(1, NP);
 Py = zeros(1, NP);
 
 %Creating random points
-% for i=1:NP
-%     Px(i)=MC+randi(Xmax);
-%     Py(i)=MC+randi(Ymax);
-% end %i
+for i=1:NP
+    Px(i)=MC+randi(Xmax);
+    Py(i)=MC+randi(Ymax);
+end %i
 
-Px = [21 108 99 99 19 101 85 21 195 110];
-Py = [149 186 45 57 87 153 137 89 17 50];
+% Px = [95 91 45 72 10];
+% Py = [6 6 6 6 6];
 % 
 % Px(1) = 21;
 % Py(1) = 24;
@@ -50,7 +50,7 @@ nlist = d;
 for i = 1:NP
     for j = 1:NP
         d(i,j) = sqrt((Px(i)-Px(j))^2 + (Py(i)-Py(j))^2);
-        if i ~= j %&& d(i,j) < MC*2 %Add d(i,j)<MC*2 to put limit on how big the radius of detection for each node should be
+        if i ~= j %&& d(i,j) < 120 %MC*2 %Add d(i,j)<MC*2 to put limit on how big the radius of detection for each node should be
             nlist(i,j) = d(i,j);
         end
     end %j
