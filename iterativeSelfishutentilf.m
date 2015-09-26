@@ -2,9 +2,13 @@ clear all
 clf
 clf(figure(3))
 clf(figure(2))
+%clf(figure(4))
+%clf(figure(5))
+%clf(figure(6))
+
 
 % Number of APs
-NP = 5;
+NP = 25;
 density=NP/5;
 
 % max distance between points
@@ -21,6 +25,16 @@ Xmax = Size - 2*MC;
 Ymax = Size - 2*MC;
 
 [Px, Py, d, neighbourlist] = createPointsAndDistances(NP, MC, Xmax, Ymax);
+%upper=upperbounddistance(d)
+
+[dminste, V, Ex]=dminst(d);
+
+%ix
+
+
+%figure(6)
+%grafplot(V,Ex,Px,Py,Size)
+
 
 [neighbourlist,I] = sort(neighbourlist,1,'descend');
 
@@ -62,6 +76,22 @@ for i = 2:iterations
 end
 
 frequencyPlot(Px, Py, Size, NP, freq_allocSelf, true)
+n=length(V);
+e=length(Ex(:,1));
+
+
+x=zeros(2,1);
+y=zeros(2,1);
+hold on
+for i=1:e
+    x(1)=Px(Ex(i,1));
+    x(2)=Px(Ex(i,2));
+    y(1)=Py(Ex(i,1));
+    y(2)=Py(Ex(i,2));
+    plot(x,y);
+end
+
+hold off
 
 figure(1)
 plot(1:iterations, dmin)
@@ -71,7 +101,7 @@ hold on
 %Running 100 simulations on topology to get optimal shortest distance
 maxDmin = 0;
 freq_allocSelfish = zeros(1, NP);
-for it = 1:(50 * NP)
+for it = 1:10 * NP
     freq_allocSelfish = selfishAllocation(NP, availableFreqs, neighbourlist, I, Px, Py, Size, d);
     dminSelf = smallestDistance(NP, d, freq_allocSelfish);
     if min(dminSelf) > maxDmin
@@ -80,6 +110,7 @@ for it = 1:(50 * NP)
 end
 
 plot(1:iterations, repmat(maxDmin, 1, iterations), 'k')
+
 
 
 
@@ -190,6 +221,7 @@ while j < iterations
         freeNodes = setdiff(1:NP, nodes); %Nodes not assigned to a frequency for second time
         
         for i = 1:length(dist) %Distances from nodes without frequency to center of mass
+             %dist(i) = ((Px(freeNodes(i)) - masscenterX) +(Py(freeNodes(i)) - masscenterY) );
             dist(i) = sqrt( (Px(freeNodes(i)) - masscenterX)^2 + (Py(freeNodes(i)) - masscenterY)^2 );
         end
         
@@ -214,7 +246,7 @@ while j < iterations
     nNodes = ceil(NP / 2); %Number of nodes required to be inside the radius
     
 end
-
+plot(5)
 plot(1:iterations, dminFire, 'r')
 legend('SELFISH', 'Best smallest distance', 'FIRE', 'Location', 'southeast')
 hold off
@@ -222,6 +254,17 @@ hold off
 dminNew = smallestDistance(NP, d, freq_alloc); %Calculating new smallest distances
 
 frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
+
+x=zeros(2,1);
+y=zeros(2,1);
+hold on
+for i=1:e
+    x(1)=Px(Ex(i,1));
+    x(2)=Px(Ex(i,2));
+    y(1)=Py(Ex(i,1));
+    y(2)=Py(Ex(i,2));
+    plot(x,y);
+end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%FIRE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -306,4 +349,4 @@ frequencyPlot(Px, Py, Size, NP, freq_alloc, false)
 [value, index] = min(distances)
 [valueFire, indexFire] = min(dminNew)
 maxDmin
-min(neighbourlist(2,:))
+
