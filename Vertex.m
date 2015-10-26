@@ -9,7 +9,7 @@ e=0;
 for i=1:n
     V(i)=i;
     for j=1:i
-        if d(i,j)<dmin
+        if d(i,j)<=dmin
             if i==j 
             else
                 e=e+1;
@@ -19,4 +19,6 @@ for i=1:n
             
         end
     end
+end
+
 end
