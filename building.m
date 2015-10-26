@@ -9,7 +9,7 @@ dmin1=5;
 NP=8*floors;
 xn=zeros(NP,1);
 yn=zeros(NP,1);
-xn=zeros(NP,1);
+zn=zeros(NP,1);
 
 x=[6 10 14];
 y=[6 10 14];
@@ -68,6 +68,9 @@ nlist = d;
 for i = 1:NP
     for j = 1:NP
         d(i,j) = sqrt((xn(i)-xn(j))^2 + (yn(i)-yn(j))^2+ (zn(i)-zn(j))^2);
+        if d(i,j) == 0
+            d(i,j) = inf;
+        end
     end %j
 end %i
 
@@ -100,7 +103,7 @@ while ~isempty(nodes)
     freq_allocSelf(node) = availableFreqs(randi(numel(availableFreqs)));
 end
 
-freq_allocRemember = freq_allocSelf; %Start point for FIRE too
+%freq_allocRemember = freq_allocSelf; %Start point for FIRE too
 
 distances = smallestDistance(NP, d, freq_allocSelf); %Get shortest distances for each node to an interfering node
 dmin(1) = min(distances); %Inserting smallest distance between interfering nodes into dmin
